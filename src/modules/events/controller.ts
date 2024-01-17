@@ -83,9 +83,10 @@ class Controller {
     const dataToUpdate: IEvent = req.body;
     try {
       const updatedEvent: any = await Service.UpdateById(eventId, dataToUpdate);
-      console.log("upfated event: ", updatedEvent);
-
-      return res.status(200).json({ success: true, data: updatedEvent });
+      if (updatedEvent) {
+        return res.status(200).json({ success: true, data: updatedEvent });
+      }
+      return res.status(400).json({ message: "not updated" });
     } catch (error) {
       return res.status(500).json({
         error,

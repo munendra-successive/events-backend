@@ -6,6 +6,7 @@ import { Connection as ConnectionInstance } from "./lib";
 import { router as userRouter } from "./modules/users";
 import { router as eventRouter } from "./modules/events";
 import swaggerSpec from "./docs/swaggerConfig";
+import logger from "./utils/logger";
 
 import OtherMiddlewareInstance from "./middlewares";
 import serverConfig from "./config";
@@ -56,9 +57,8 @@ class Server {
   }
 
   public start(): void {
-    // eslint-disable-nextline no-console
     this.app.listen(serverConfig.port, () => {
-      console.log(`listening on port: ${serverConfig.port}`);
+      logger.log('info',`listening on port: ${serverConfig.port}`);
     });
   }
 }

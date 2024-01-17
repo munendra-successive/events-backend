@@ -1,17 +1,135 @@
-import { Router } from 'express';
-import multer, { type Multer } from 'multer';
-import { Controller } from '.';
+import { Router } from "express";
+import multer, { type Multer } from "multer";
+import { Controller } from ".";
 
-const upload: Multer = multer({ dest: 'uploads/' });
+const upload: Multer = multer({ dest: "uploads/" });
 const router: Router = Router();
 
-router.route('/create').post(Controller.add);
+/**
+ * @swagger
+ * /events/create:
+ *   post:
+ *     tags:
+ *       - Events API -Create an new event
+ *     summary: Create an event.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Conference Event - 4860"
+ *                 description: Name of the event.
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                     example: "598 Elm St."
+ *                   city:
+ *                     type: string
+ *                     example: "New York"
+ *
+ *                   state:
+ *                     type: string
+ *                     example: "NY"
+ *                   postalCode:
+ *                     type: string
+ *                     example: "19236"
+ *                   country:
+ *                     type: string
+ *                     example: "USA"
+ *               description:
+ *                 type: string
+ *                 example: "A Conference event happening in the heart of Seattle."
+ *               startDate:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-07-19T18:30:00.000Z"
+ *               endDate:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-09-29T18:30:00.000Z"
+ *               category:
+ *                 type: string
+ *                 example: "Theater"
+ *               organizerInfo:
+ *                 type: string
+ *                 example: "Eventbrite"
+ *               type:
+ *                 type: string
+ *                 example: "Class"
+ *               status:
+ *                 type: string
+ *                 example: "Registration open"
+ *     responses:
+ *       '200':
+ *         description: An created successfully.
+ *       '500':
+ *         description: Internal server error.
+ */
 
+router.route("/create").post(Controller.add);
 
-router.route('/getBulk').get(Controller.getBulk);
+/**
+ * @swagger
+ * /events/getBulk:
+ *   get:
+ *     tags:
+ *       -  Events API - Get details of bulk uploaded events"
+ *     summary: Returns all bulk uploaded records.
+ *     responses:
+ *       '200':
+ *         description: Details retrieved successfully.
+ *       '400':
+ *         description: Not found.
+ *       '500':
+ *         description: Internal server error.
+ */
+router.route("/getBulk").get(Controller.getBulk);
 
+/**
+ * @swagger
+ * /events/get:
+ *   get:
+ *     tags:
+ *       -  Events API - Get numbers of event with search filter or without search filter"
+ *     summary: Returns events based on current size and pageSize.
+ *     parameters:
+ *       - name: current
+ *         in: query
+ *         required: true
+ *         description: Parameter description in CommonMark or HTML.
+ *         schema:
+ *           type: string
+ *           example: "1"
+ *       - name: pageSize
+ *         in: query
+ *         required: true
+ *         description: Parameter description in CommonMark or HTML.
+ *         schema:
+ *           type: string
+ *           example: "10"
+ *       - name: query
+ *         in: query
+ *         required: false
+ *         description: Parameter description in CommonMark or HTML.
+ *         schema:
+ *           type: string
+ *           example: "GameFilter"
+ *     responses:
+ *       '200':
+ *         description: An events retrieved successfully.
+ *       '400':
+ *         description: Not found.
+ *       '500':
+ *         description: Internal server error.
+ */
 
-router.route('/get').get(Controller.get)
+router.route("/get").get(Controller.get);
 
 /**
  * @swagger
@@ -38,7 +156,7 @@ router.route('/get').get(Controller.get)
  *         description: Internal server error.
  */
 
-router.route('/getById/:id').get(Controller.getById);
+router.route("/getById/:id").get(Controller.getById);
 
 /**
  * @swagger
@@ -117,7 +235,7 @@ router.route('/getById/:id').get(Controller.getById);
  *       '500':
  *         description: Internal server error.
  */
-router.route('/updateById/:id').put(Controller.updateById);
+router.route("/updateById/:id").put(Controller.updateById);
 
 /**
  * @swagger
@@ -144,7 +262,47 @@ router.route('/updateById/:id').put(Controller.updateById);
  *         description: Internal server error.
  */
 
-router.route('/deleteById/:id').delete(Controller.deleteById);
+router.route("/deleteById/:id").delete(Controller.deleteById);
+
+/**
+ * @swagger
+ * /events/getByUploadId/{uploadId}:
+ *   get:
+ *     tags:
+ *       -  Events API - Get an details of all errors occured in bulk Upload"
+ *     summary: Returns details of bulkupload errors according to current page and pageSize.
+ *     parameters:
+ *       - name: uploadId
+ *         in: path
+ *         required: true
+ *         description: Parameter description in CommonMark or HTML.
+ *         schema:
+ *           type: string
+ *           example: "1704967600601"
+ *       - name: current
+ *         in: query
+ *         required: true
+ *         description: Parameter description in CommonMark or HTML.
+ *         schema:
+ *           type: string
+ *           example: "1"
+ *       - name: pageSize
+ *         in: query
+ *         required: true
+ *         description: Parameter description in CommonMark or HTML.
+ *         schema:
+ *           type: string
+ *           example: "10"
+ *     responses:
+ *       '200':
+ *         description: details of errors retrieved successfully.
+ *       '400':
+ *         description: Not found.
+ *       '500':
+ *         description: Internal server error.
+ */
+
+router.route("/getByUploadId/:uploadId").get(Controller.getByUploadId);
 
 /**
  * @swagger
@@ -172,8 +330,6 @@ router.route('/deleteById/:id').delete(Controller.deleteById);
  *       '500':
  *         description: Internal server error.
  */
-
-router.route('/getByUploadId/:uploadId').get(Controller.getByUploadId);
-router.route('/upload').post(upload.single('csvFile'), Controller.uploadCsv);
+router.route("/upload").post(upload.single("csvFile"), Controller.uploadCsv);
 
 export default router;

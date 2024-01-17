@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 import serverConfig from "../config";
+import logger from "../utils/logger";
 class Connection {
   private readonly URI = serverConfig.mongoUrl;
 
   connectDb = async (): Promise<any> => {
     try {
       await mongoose.connect(this.URI);
-      console.log("Connection successful");
+      logger.log("info", "Connection Successful");
     } catch (error) {
-      console.error("Database Connection Failed");
+      logger.log("error", "Database Connection Failed");
     }
   };
 
