@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">95% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>19/20</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>19/20</span>
             </div>
         
             
@@ -96,10 +96,15 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -107,12 +112,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
@@ -126,40 +133,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { Repository } from './repository';
-import { type ILogin, type IUser } from './entities';
-import serverConfig from '../../config';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import { Repository } from "./repository";
+import { type ILogin, type IUser } from "./entities";
+import serverConfig from "../../config";
+import logger from "../../utils/logger";
 &nbsp;
 class Service {
-    private readonly secretKey = serverConfig.jwtSecret;
+  private readonly secretKey = serverConfig.jwtSecret;
 &nbsp;
-    generateToken(loginData: ILogin): string {
-        const token: string = jwt.sign(loginData, serverConfig.jwtSecret, {
-            expiresIn: '30m',
-        });
-        return token;
+  generateToken(loginData: ILogin): string {
+    logger.info("User Service - generateToken");
+    const token: string = jwt.sign(loginData, serverConfig.jwtSecret, {
+      expiresIn: "30m",
+    });
+    return token;
+  }
+&nbsp;
+  async login(loginData: ILogin): Promise&lt;any&gt; {
+    logger.info("User Service - login");
+    const { email, password } = loginData;
+    const filter: { email: string } = { email };
+    const user: any = await Repository.findByField(filter);
+&nbsp;
+    if (user) {
+      const result = await bcrypt.compare(password, user[0].password);
+      return result;
     }
+<span class="cstat-no" title="statement not covered" >    return false;</span>
+  }
 &nbsp;
-    async login(loginData: ILogin): Promise&lt;any&gt; {
-        const { email, password } = loginData;
-        const filter: { email: string } = { email };
-        const user: any = await Repository.findByField(filter);
-&nbsp;
-        if (user) {
-            const result = await bcrypt.compare(password, user[0].password);
-            return result;
-        }
-<span class="cstat-no" title="statement not covered" >        return false;</span>
-    }
-&nbsp;
-    async register(regData: IUser): Promise&lt;any&gt; {
-        return await Repository.register(regData);
-    }
+  async register(regData: IUser): Promise&lt;any&gt; {
+    logger.info("User Service - register");
+    return await Repository.register(regData);
+  }
 }
 export default new Service();
 &nbsp;</pre></td></tr></table></pre>
@@ -169,7 +181,7 @@ export default new Service();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-15T08:46:17.815Z
+                at 2024-01-23T18:59:16.748Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

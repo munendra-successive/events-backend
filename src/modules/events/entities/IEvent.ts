@@ -1,5 +1,5 @@
-import { type Document } from 'mongoose';
-import { type IAddress } from './index';
+import { type Document } from "mongoose";
+import { type IAddress } from "./index";
 
 interface IEvent extends Document {
   name: string;
@@ -11,6 +11,7 @@ interface IEvent extends Document {
   organizerInfo: string; // array of objects- multiple organizers
   type: string;
   status: string; // enum
-  createdAt: string; // updated at
+  createdBy: string;
+  upDatedBy: string;
 }
 export default IEvent;

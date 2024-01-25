@@ -9,7 +9,7 @@ class Connection {
       await mongoose.connect(this.URI);
       logger.log("info", "Connection Successful");
     } catch (error) {
-      logger.log("error", "Database Connection Failed");
+      logger.error(`Database Connection Failed: ${error}`);
     }
   };
 

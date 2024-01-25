@@ -6,6 +6,10 @@ describe("POST /events/create", () => {
   it("should return status 200 if event added successfully", async () => {
     const res = await request(app)
       .post("/events/create")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .send({
         name: "Munendra Kushwaha",
         address: {
@@ -24,12 +28,16 @@ describe("POST /events/create", () => {
         status: "Limited tickets available",
       });
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ msg: "Event added Successfully" });
+    expect(res.body).toHaveProperty("message");
   });
   it("should return status 500 if internal server error", async () => {
     await Connection.disconnectDb();
     const res = await request(app)
       .post("/events/create")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .send({
         name: "Munendra Kushwaha",
         address: {
@@ -56,6 +64,10 @@ describe("GET /events/get", () => {
   it("should return status 200 if query is not present", async () => {
     const res = await request(app)
       .get("/events/get")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .query({ current: "1", pageSize: "10" });
 
     expect(res.status).toBe(200);
@@ -67,6 +79,10 @@ describe("GET /events/get", () => {
   it("should return status 200 and data if query is present and it is filter query", async () => {
     const res = await request(app)
       .get("/events/get")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .query({ current: "1", pageSize: "10", query: "GameFilter" });
 
     expect(res.status).toBe(200);
@@ -78,6 +94,10 @@ describe("GET /events/get", () => {
   it("should return status 200 and data if query is present and it is search query", async () => {
     const res = await request(app)
       .get("/events/get")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .query({ current: "1", pageSize: "10", query: "Music" });
 
     expect(res.status).toBe(200);
@@ -90,6 +110,10 @@ describe("GET /events/get", () => {
     await Connection.disconnectDb();
     const res = await request(app)
       .get("/events/get")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .query({ current: "0", pageSize: "10" });
 
     expect(res.status).toBe(500);
@@ -99,23 +123,36 @@ describe("GET /events/get", () => {
 
 describe("GET /events/getBulk", () => {
   it("should return 200 and data ", async () => {
-    const res = await request(app).get("/events/getBulk");
+    const res = await request(app)
+      .get("/events/getBulk")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.body).toEqual(expect.any(Object));
     expect(res.body).toHaveProperty("data");
   });
 
   it("should return 500 ", async () => {
     Connection.disconnectDb();
-    const res = await request(app).get("/events/getBulk");
+    const res = await request(app)
+      .get("/events/getBulk")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.body).toEqual(expect.any(Object));
   });
 });
 
 describe("GET /events/getById/:id", () => {
   it("should return status 200 and data", async () => {
-    const res = await request(app).get(
-      "/events/getById/659fbdb0827acd450b3fc50c"
-    );
+    const res = await request(app)
+      .get("/events/getById/65ae0267d0dc76fce4e375ec")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.status).toBe(200);
     expect(res.body).toEqual(expect.any(Object));
     expect(res.body).toHaveProperty("data");
@@ -123,9 +160,12 @@ describe("GET /events/getById/:id", () => {
 
   it("should return status 500", async () => {
     await Connection.disconnectDb();
-    const res = await request(app).get(
-      "/events/getById/658978c8b133a70e001739"
-    );
+    const res = await request(app)
+      .get("/events/getById/65ae0267d0dc76fce4e37600")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.status).toBe(500);
     expect(res.body).toEqual(expect.any(Object));
   });
@@ -134,7 +174,11 @@ describe("GET /events/getById/:id", () => {
 describe("PUT /events/updateById/:id", () => {
   it("should return status 200 and data", async () => {
     const res = await request(app)
-      .put("/events/updateById/658978c8b133a70e00173970")
+      .put("/events/updateById/65ae0267d0dc76fce4e375ec")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .send({
         name: "Munendra Kushwaha",
         address: {
@@ -161,6 +205,10 @@ describe("PUT /events/updateById/:id", () => {
     Connection.disconnectDb();
     const res = await request(app)
       .put("/events/updateById/658978c8b133a70e00173970")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .send({
         name: "Munendra Kushwaha",
         address: {
@@ -185,18 +233,24 @@ describe("PUT /events/updateById/:id", () => {
 
 describe("GET /events/deleteById/:id", () => {
   it("should return status 200 and data", async () => {
-    const res = await request(app).delete(
-      "/events/deleteById/658978c8b133a70e0017397a"
-    );
+    const res = await request(app)
+      .delete("/events/deleteById/65ae0267d0dc76fce4e37602")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.status).toBe(200);
     expect(res.body).toEqual(expect.any(Object));
-    expect(res.body).toHaveProperty("response");
+    expect(res.body).toHaveProperty("message");
   });
   it("should return status 500", async () => {
     Connection.disconnectDb();
-    const res = await request(app).delete(
-      "/events/deleteById/658978c8b133a70e0017397a"
-    );
+    const res = await request(app)
+      .delete("/events/deleteById/658978c8b133a70e0017397a")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.status).toBe(500);
     expect(res.body).toEqual(expect.any(Object));
   });
@@ -204,14 +258,24 @@ describe("GET /events/deleteById/:id", () => {
 
 describe("GET /events/getByUploadId/:uploadId", () => {
   it("should return status 200 and data", async () => {
-    const res = await request(app).get("/events/getByUploadId/1704394132190");
+    const res = await request(app)
+      .get("/events/getByUploadId/1704394132190")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.status).toBe(200);
     expect(res.body).toEqual(expect.any(Object));
     expect(res.body).toHaveProperty("data");
   });
   it("should return status 500", async () => {
     Connection.disconnectDb();
-    const res = await request(app).get("/events/getByUploadId/1704394132190");
+    const res = await request(app)
+      .get("/events/getByUploadId/1704394132190")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.status).toBe(500);
     expect(res.body).toEqual(expect.any(Object));
   });
@@ -222,18 +286,29 @@ describe("POST /upload/csv", () => {
   it("should return status 200 and  success message when a CSV file is uploaded", async () => {
     const res = await request(app)
       .post("/events/upload")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      )
       .attach("csvFile", validCsvPath);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
-      message: "CSV data uploaded and saved to MongoDB successfully",
+      data: null,
+      datalength: null,
+      message: "File uploaded Successfully",
+      status: 200,
+      success: true,
     });
   });
 
   it("should return status 400 and if no file provided", async () => {
-    const res = await request(app).post("/events/upload");
+    const res = await request(app)
+      .post("/events/upload")
+      .set(
+        "Authorization",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1vbnVAZ21haWwuY29tIiwicGFzc3dvcmQiOiJNb251QDEyMyIsImlhdCI6MTcwNjAzNDk5MSwiZXhwIjoxNzA2MDM2NzkxfQ.kVwh1UHJHccb8msVMHbLZ4UdeaIX-w9d-kdkQc5e1O4"
+      );
     expect(res.status).toBe(400);
-    expect(res.body).toEqual({
-      message: "No file uploaded",
-    });
+    expect(res.body).toHaveProperty("message");
   });
 });

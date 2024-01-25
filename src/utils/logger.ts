@@ -8,7 +8,8 @@ const logger = createLogger({
       level: "info",
       format: format.combine(
         format.timestamp({
-          format: () => moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss"),
+          format: () =>
+            moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss"),
         }),
         format.json()
       ),

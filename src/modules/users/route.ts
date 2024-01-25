@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import controllerInstance from './controller';
-import { Validation, Authentication } from './middleware';
+import { Router } from "express";
+import controllerInstance from "./controller";
+import { Validation, Authentication } from "./middleware";
 
 const router: Router = Router();
 
@@ -26,14 +26,15 @@ const router: Router = Router();
  *                example: "MOnu@123"
  *     responses:
  *       '200':
- *         description: accessed.
+ *         description: Vaild User.
+ *       '401':
+ *         description: Invalid Credentials
  *       '500':
  *         description: Internal server error.
  */
 router
-    .route('/login')
-    .post(Authentication.authenticate, controllerInstance.login);
-
+  .route("/login")
+  .post(Authentication.authenticate, controllerInstance.login);
 
 /**
  * @swagger
@@ -73,7 +74,7 @@ router
  *         description: Internal server error.
  */
 router
-    .route('/register')
-    .post(Validation.validate, controllerInstance.register);
+  .route("/register")
+  .post(Validation.validate, controllerInstance.register);
 
 export default router;

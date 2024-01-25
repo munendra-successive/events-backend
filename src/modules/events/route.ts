@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer, { type Multer } from "multer";
 import { Controller } from ".";
-
+import { Authentication } from "../users/middleware";
 const upload: Multer = multer({ dest: "uploads/" });
 const router: Router = Router();
 
@@ -72,7 +72,7 @@ const router: Router = Router();
  *         description: Internal server error.
  */
 
-router.route("/create").post(Controller.add);
+router.route("/create").post(Authentication.validateRequest, Controller.add);
 
 /**
  * @swagger
@@ -89,7 +89,9 @@ router.route("/create").post(Controller.add);
  *       '500':
  *         description: Internal server error.
  */
-router.route("/getBulk").get(Controller.getBulk);
+router
+  .route("/getBulk")
+  .get(Authentication.validateRequest, Controller.getBulk);
 
 /**
  * @swagger
@@ -129,7 +131,7 @@ router.route("/getBulk").get(Controller.getBulk);
  *         description: Internal server error.
  */
 
-router.route("/get").get(Controller.get);
+router.route("/get").get(Authentication.validateRequest, Controller.get);
 
 /**
  * @swagger
@@ -156,7 +158,9 @@ router.route("/get").get(Controller.get);
  *         description: Internal server error.
  */
 
-router.route("/getById/:id").get(Controller.getById);
+router
+  .route("/getById/:id")
+  .get(Authentication.validateRequest, Controller.getById);
 
 /**
  * @swagger
@@ -235,7 +239,9 @@ router.route("/getById/:id").get(Controller.getById);
  *       '500':
  *         description: Internal server error.
  */
-router.route("/updateById/:id").put(Controller.updateById);
+router
+  .route("/updateById/:id")
+  .put(Authentication.validateRequest, Controller.updateById);
 
 /**
  * @swagger
@@ -262,7 +268,9 @@ router.route("/updateById/:id").put(Controller.updateById);
  *         description: Internal server error.
  */
 
-router.route("/deleteById/:id").delete(Controller.deleteById);
+router
+  .route("/deleteById/:id")
+  .delete(Authentication.validateRequest, Controller.deleteById);
 
 /**
  * @swagger
@@ -302,7 +310,9 @@ router.route("/deleteById/:id").delete(Controller.deleteById);
  *         description: Internal server error.
  */
 
-router.route("/getByUploadId/:uploadId").get(Controller.getByUploadId);
+router
+  .route("/getByUploadId/:uploadId")
+  .get(Authentication.validateRequest, Controller.getByUploadId);
 
 /**
  * @swagger
@@ -330,6 +340,12 @@ router.route("/getByUploadId/:uploadId").get(Controller.getByUploadId);
  *       '500':
  *         description: Internal server error.
  */
-router.route("/upload").post(upload.single("csvFile"), Controller.uploadCsv);
+router
+  .route("/upload")
+  .post(
+    Authentication.validateRequest,
+    upload.single("csvFile"),
+    Controller.uploadCsv
+  );
 
 export default router;

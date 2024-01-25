@@ -1,16 +1,52 @@
 import { type NextFunction, type Request, type Response } from "express";
-import jwt, { TokenExpiredError } from "jsonwebtoken";
+import jwt, {
+  JsonWebTokenError,
+  JwtPayload,
+  TokenExpiredError,
+} from "jsonwebtoken";
 import serverConfig from "../../../config";
+import logger from "../../../utils/logger";
+import SystemResponse from "../../../lib/response-handler/SystemResponse";
 
 class Authentication {
-  // private readonly secretKey = "myNameIsMunendraKumarKushwaha";
   private readonly secretKey = serverConfig.jwtSecret;
+
+  validateRequest = (req: Request, res: Response, next: NextFunction): any => {
+    logger.info("Validate Request ");
+    try {
+      const token: any = req.header("authorization");
+
+      logger.info(`token is: ${token}`);
+      if (!token) {
+        return res
+          .status(403)
+          .send(SystemResponse.unAuthenticated("UnAuthorized"));
+      }
+      const decoded = jwt.verify(token, this.secretKey) as JwtPayload;
+
+      next();
+    } catch (error) {
+      if (
+        error instanceof TokenExpiredError ||
+        error instanceof JsonWebTokenError
+      ) {
+        return res
+          .status(403)
+          .send(SystemResponse.unAuthenticated("UnAuthorized"));
+      }
+
+      return res
+        .status(500)
+        .send(SystemResponse.getErrorResponse("Internal Server Error"));
+    }
+  };
 
   public authenticate = (
     req: Request,
     res: Response,
     next: NextFunction
   ): Response<any, Record<string, any>> | undefined => {
+    logger.info("Authentication - authenticate");
     const token: any = req.header("authorization");
 
     if (!token) {
@@ -27,7 +63,6 @@ class Authentication {
         details: decoded,
         tokenIs: token,
       });
-      next();
     } catch (error) {
       if (error instanceof TokenExpiredError) {
         next();
